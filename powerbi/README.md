@@ -54,6 +54,14 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
 - Table: recommended team per round
 - Line: expected points vs actual points (if you later log actual)
 
+## Power Query helpers
+
+See `powerbi/powerquery_snippets.md` for:
+- `$undefined` → null replacement
+- adding `season_round`
+- type conversions
+- merging race dates into DimRound
+
 ## DAX measure ideas
 
 See `powerbi/dax.md`.
