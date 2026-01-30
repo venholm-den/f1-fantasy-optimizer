@@ -1,6 +1,6 @@
 season,round,driver_id,driver_name,constructor,price
-2025,1,verstappen,Max Verstappen,Red Bull,28.0
-2025,1,norris,Lando Norris,McLaren,24.5
-2025,1,leclerc,Charles Leclerc,Ferrari,22.0
-2025,1,alonso,Fernando Alonso,Aston Martin,14.0
-2025,1,bearman,Oliver Bearman,Haas,6.0
+2025,1,max_verstappen,Max Verstappen,red_bull,28.0
+2025,1,norris,Lando Norris,mclaren,24.5
+2025,1,leclerc,Charles Leclerc,ferrari,22.0
+2025,1,alonso,Fernando Alonso,aston_martin,14.0
+2025,1,bearman,Oliver Bearman,haas,6.0

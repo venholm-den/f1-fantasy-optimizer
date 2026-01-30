@@ -32,7 +32,7 @@ src/
 Required columns:
 - `season` (int)
 - `round` (int)
-- `driver_id` (string, stable id you choose)
+- `driver_id` (string, Ergast driverId, e.g. `max_verstappen`)
 - `driver_name` (string)
 - `constructor` (string)
 - `price` (number)
@@ -41,7 +41,7 @@ Required columns:
 Required columns:
 - `season` (int)
 - `round` (int)
-- `constructor_id` (string)
+- `constructor_id` (string, Ergast constructorId, e.g. `red_bull`)
 - `constructor_name` (string)
 - `price` (number)
 
