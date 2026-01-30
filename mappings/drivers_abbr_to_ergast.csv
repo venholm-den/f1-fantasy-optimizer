@@ -1,0 +1,4 @@
+abbr,ergast_driver_id,driver_name
+# Fill this in once and it will enrich DimDriver with Ergast IDs + names.
+# Example:
+# VER,max_verstappen,Max Verstappen

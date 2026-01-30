@@ -6,8 +6,8 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
 
 ### Dimensions
 - **DimRound**: season + round (+ optional raceName/date via `dim_round_dates.csv`)
-- **DimDriver**: **f1fantasytools** driver id (e.g. `AST_ALO`) + abbreviation
-- **DimConstructor**: **f1fantasytools** constructor id (e.g. `RED`) + abbreviation
+- **DimDriver**: **f1fantasytools** driver id (e.g. `AST_ALO`) + abbreviation + *(optional)* Ergast id/name
+- **DimConstructor**: **f1fantasytools** constructor id (e.g. `RED`) + abbreviation + *(optional)* Ergast id/name
 
 ### Facts (long)
 - **FactDriverPrices**: `f1fantasytools_prices_drivers_long.csv`
@@ -32,6 +32,9 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
    - DimRound[season_round] → Fact* [season_round]
    - DimDriver[driver_id] → FactDriver* [id]  *(f1fantasytools IDs like `AST_ALO`)*
    - DimConstructor[constructor_id] → FactConstructor* [id]  *(f1fantasytools IDs like `RED`)*
+
+Optional (nicer labels): run `python -m src.dimensions --season <season>` after filling `mappings/drivers_abbr_to_ergast.csv`.
+That will populate `DimDriver[driver_name]` / `DimConstructor[constructor_name]` for display purposes.
 
 5) (Recommended) Add race dates:
    - Import `data/seasons/<season>/raw/dim_round_dates.csv`
