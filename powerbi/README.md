@@ -6,8 +6,8 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
 
 ### Dimensions
 - **DimRound**: season + round (+ optional raceName/date via `dim_round_dates.csv`)
-- **DimDriver**: driver id, abbreviation, name (optional)
-- **DimConstructor**: constructor id, abbreviation, name (optional)
+- **DimDriver**: **f1fantasytools** driver id (e.g. `AST_ALO`) + abbreviation
+- **DimConstructor**: **f1fantasytools** constructor id (e.g. `RED`) + abbreviation
 
 ### Facts (long)
 - **FactDriverPrices**: `f1fantasytools_prices_drivers_long.csv`
@@ -30,8 +30,8 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
    - Replace literal `$undefined` with blank/null (Transform → Replace Values)
 4) Create relationships:
    - DimRound[season_round] → Fact* [season_round]
-   - DimDriver[driver_id] → FactDriver* [id]
-   - DimConstructor[constructor_id] → FactConstructor* [id]
+   - DimDriver[driver_id] → FactDriver* [id]  *(f1fantasytools IDs like `AST_ALO`)*
+   - DimConstructor[constructor_id] → FactConstructor* [id]  *(f1fantasytools IDs like `RED`)*
 
 5) (Recommended) Add race dates:
    - Import `data/seasons/2025/raw/dim_round_dates.csv`

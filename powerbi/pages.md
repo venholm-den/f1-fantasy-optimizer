@@ -4,6 +4,8 @@ This is a suggested report layout for **Power BI Desktop (Windows)**.
 It assumes you imported the CSVs in `data/seasons/2025/raw/` and created relationships
 as described in `powerbi/README.md`.
 
+Note: the fact tables use **f1fantasytools IDs** (`Fact*.[id]`), and the dims are built from them (`DimDriver[driver_id]`, `DimConstructor[constructor_id]`).
+
 > Tip: Build **measures once**, then reuse across pages.
 
 ## Page 1 — Round dashboard (round-centric)
