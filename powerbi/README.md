@@ -5,7 +5,7 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
 ## Recommended model (star schema)
 
 ### Dimensions
-- **DimRound**: season + round + (optional) raceName/date
+- **DimRound**: season + round (+ optional raceName/date via `dim_round_dates.csv`)
 - **DimDriver**: driver id, abbreviation, name (optional)
 - **DimConstructor**: constructor id, abbreviation, name (optional)
 
@@ -29,9 +29,14 @@ This repo is designed to be PowerBI-friendly: raw data is stored as long-format 
    - Ensure `price`, `priceChange`, `totalPoints`, `nnTotalPoints` are Decimal/Whole Number
    - Replace literal `$undefined` with blank/null (Transform → Replace Values)
 4) Create relationships:
-   - DimRound[season+round] → Fact* [season+round]
-   - DimDriver[id] → FactDriver* [id]
-   - DimConstructor[id] → FactConstructor* [id]
+   - DimRound[season_round] → Fact* [season_round]
+   - DimDriver[driver_id] → FactDriver* [id]
+   - DimConstructor[constructor_id] → FactConstructor* [id]
+
+5) (Recommended) Add race dates:
+   - Import `data/seasons/2025/raw/dim_round_dates.csv`
+   - Merge into `DimRound` on (season, round)
+   - Then create a Calendar table and relate Calendar[Date] → DimRound[raceDate]
 
 ## Suggested visuals
 
