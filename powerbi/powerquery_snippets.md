@@ -74,6 +74,8 @@ Assumes:
 - `DimRound` has `season` and `round`
 - `dim_round_dates` has `season` and `round` and `raceDate`
 
+Tip: if you load multiple seasons, append all `dim_round_dates.csv` files into one table first, then merge once.
+
 ```powerquery
 let
     Source = DimRound,

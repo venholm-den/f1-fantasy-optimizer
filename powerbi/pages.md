@@ -1,7 +1,7 @@
 # Power BI page plan
 
 This is a suggested report layout for **Power BI Desktop (Windows)**.
-It assumes you imported the CSVs in `data/seasons/2025/raw/` and created relationships
+It assumes you imported the CSVs in `data/seasons/<season>/raw/` (available: 2023, 2024, 2025) and created relationships
 as described in `powerbi/README.md`.
 
 Note: the fact tables use **f1fantasytools IDs** (`Fact*.[id]`), and the dims are built from them (`DimDriver[driver_id]`, `DimConstructor[constructor_id]`).
@@ -93,7 +93,7 @@ Note: the fact tables use **f1fantasytools IDs** (`Fact*.[id]`), and the dims ar
 
 ## Page 5 — Optimizer outputs (future)
 
-Once the optimizer is implemented and writes to `data/seasons/2025/derived/`:
+Once the optimizer is implemented and writes to `data/seasons/<season>/derived/`:
 - Table: recommended team per round
 - Cards: expected vs actual
 - Chip suggestions over time
