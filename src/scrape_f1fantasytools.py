@@ -1,7 +1,9 @@
-"""Scrape season tables from f1fantasytools.com/statistics.
+"""Scrape season tables from f1fantasytools.com.
 
-The site embeds a big JSON blob into the HTML via Next.js flight data.
-We extract that, then export long-format CSVs suitable for PowerBI.
+Preferred method: call the public JSON endpoint:
+- https://f1fantasytools.com/api/statistics/<season>
+
+Fallback: the site also embeds a big JSON blob into the HTML via Next.js flight data.
 
 Outputs:
 - data/seasons/<season>/raw/f1fantasytools_points_drivers_long.csv
@@ -65,9 +67,11 @@ def main() -> int:
     ap.add_argument("--season", type=int, default=2025)
     args = ap.parse_args()
 
-    url = "https://f1fantasytools.com/statistics"
-    html = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=60).text
-    blob = _extract_season_blob(html)
+    # Prefer the public API.
+    api_url = f"https://f1fantasytools.com/api/statistics/{args.season}"
+    r = requests.get(api_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=60)
+    r.raise_for_status()
+    blob = r.json()
 
     sr = blob.get("seasonResult") or {}
     season = int(sr.get("season") or args.season)
