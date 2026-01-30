@@ -56,4 +56,21 @@ python3 -m src.compute_metrics --season 2025 --round 1
 
 This will write outputs into `data/seasons/2025/derived/`.
 
+## Optional: Python visuals
+
+Interactive HTML visuals (Plotly) can be generated locally.
+
+Install:
+```bash
+pip install -r requirements-viz.txt
+```
+
+Examples:
+```bash
+python3 -m src.viz.price_points_scatter --season 2025
+python3 -m src.viz.heatmap_points --season 2025
+```
+
+Outputs are written to `outputs/` (gitignored).
+
 > Note: this repo scaffolds the pipeline and file formats first. The modelling/optimisation will be filled in iteratively.
