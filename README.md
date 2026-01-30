@@ -13,48 +13,44 @@ A small, file-first pipeline to help optimise **Official F1 Fantasy** team selec
 data/
   seasons/
     2025/
-      rounds/
-        R01/
-          prices_drivers.csv
-          prices_constructors.csv
-          notes.json
-      derived/
-        driver_metrics.csv
-        constructor_metrics.csv
-        team_recommendations.csv
+      raw/                      # scraped long-format tables (PowerBI-friendly)
+      rounds/                   # optional manual snapshots (if you prefer)
+      derived/                  # generated metrics/recommendations (planned)
 schemas/
 src/
+powerbi/
 ```
 
-## CSV schemas
+### Raw (recommended)
+The default data source is **f1fantasytools** (scraped, no login):
+- `data/seasons/2025/raw/f1fantasytools_prices_*_long.csv`
+- `data/seasons/2025/raw/f1fantasytools_points_*_long.csv`
 
-### `prices_drivers.csv`
-Required columns:
-- `season` (int)
-- `round` (int)
-- `driver_id` (string, Ergast driverId, e.g. `max_verstappen`)
-- `driver_name` (string)
-- `constructor` (string)
-- `price` (number)
+IDs in these files use **f1fantasytools IDs** (e.g. `AST_ALO`, `RED`, etc.).
 
-### `prices_constructors.csv`
-Required columns:
-- `season` (int)
-- `round` (int)
-- `constructor_id` (string, Ergast constructorId, e.g. `red_bull`)
-- `constructor_name` (string)
-- `price` (number)
+### Optional manual snapshots
+If you want to manually store prices you copy from the official game, you can still use:
+- `data/seasons/2025/rounds/RXX/prices_drivers.csv`
+- `data/seasons/2025/rounds/RXX/prices_constructors.csv`
+
+(Those schemas live under `schemas/`.)
 
 ## Quick start
 
-1) Put weekly snapshots in `data/seasons/2025/rounds/RXX/`.
-2) Run:
+### A) Pull the season tables (recommended)
+
+```bash
+python3 -m src.scrape_f1fantasytools --season 2025
+python3 -m src.dimensions --season 2025
+```
+
+### B) Generate placeholder derived outputs
 
 ```bash
 python3 -m src.compute_metrics --season 2025 --round 1
 ```
 
-This will write outputs into `data/seasons/2025/derived/`.
+Outputs are written under `data/seasons/2025/derived/`.
 
 ## Optional: Python visuals
 
