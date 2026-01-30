@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# Derived outputs
+/data/seasons/*/derived/*.csv
+
+# Local notes
+notes.local.*

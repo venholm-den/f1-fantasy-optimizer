@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "prices_constructors.csv schema",
+  "type": "object",
+  "required": ["season", "round", "constructor_id", "constructor_name", "price"],
+  "properties": {
+    "season": {"type": "integer"},
+    "round": {"type": "integer"},
+    "constructor_id": {"type": "string", "minLength": 1},
+    "constructor_name": {"type": "string", "minLength": 1},
+    "price": {"type": "number"}
+  }
+}
