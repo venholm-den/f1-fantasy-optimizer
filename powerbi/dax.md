@@ -88,10 +88,12 @@ VAR PointsByDriver =
         ),
         NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
     )
-VAR Fit = LINESTX ( PointsByDriver, [y], [x] )
+VAR Fit0 = LINESTX ( PointsByDriver, [y], [x] )
+-- IMPORTANT: `Fit0` is a table *variable* (not a model table), so you can't write Fit0[Slope1].
+-- We project the value we need into a 1-column table variable first.
+VAR Fit = SELECTCOLUMNS ( Fit0, "slope", [Slope1] )
 RETURN
-    -- Some builds expose the slope column as Fit[Slope1]; others as Fit[Slope].
-    COALESCE ( MAXX ( Fit, Fit[Slope1] ), MAXX ( Fit, Fit[Slope] ) )
+    MAXX ( Fit, [slope] )
 ```
 
 ### Driver trendline intercept
@@ -106,10 +108,10 @@ VAR PointsByDriver =
         ),
         NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
     )
-VAR Fit = LINESTX ( PointsByDriver, [y], [x] )
+VAR Fit0 = LINESTX ( PointsByDriver, [y], [x] )
+VAR Fit = SELECTCOLUMNS ( Fit0, "intercept", [Intercept] )
 RETURN
-    -- Intercept is usually Fit[Intercept], but some builds return Fit[Intercept1].
-    COALESCE ( MAXX ( Fit, Fit[Intercept] ), MAXX ( Fit, Fit[Intercept1] ) )
+    MAXX ( Fit, [intercept] )
 ```
 
 ### Predicted Y on the trendline (at the current point’s X)
