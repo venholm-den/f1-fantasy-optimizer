@@ -66,7 +66,8 @@ VAR PointsByDriver =
     )
 VAR Fit = LINESTX ( PointsByDriver, [y], [x] )
 RETURN
-    MAXX ( Fit, [Slope1] )
+    -- Some builds expose the slope column as Fit[Slope1]; others as Fit[Slope].
+    COALESCE ( MAXX ( Fit, Fit[Slope1] ), MAXX ( Fit, Fit[Slope] ) )
 ```
 
 ### Driver trendline intercept
@@ -83,7 +84,8 @@ VAR PointsByDriver =
     )
 VAR Fit = LINESTX ( PointsByDriver, [y], [x] )
 RETURN
-    MAXX ( Fit, [Intercept] )
+    -- Intercept is usually Fit[Intercept], but some builds return Fit[Intercept1].
+    COALESCE ( MAXX ( Fit, Fit[Intercept] ), MAXX ( Fit, Fit[Intercept1] ) )
 ```
 
 ### Predicted Y on the trendline (at the current point’s X)
@@ -107,6 +109,21 @@ RETURN
 
 Notes:
 - This respects the current report filters because it uses `ALLSELECTED`.
-- If `LINESTX` column names differ in your version (rare), check what it returns by temporarily returning `Fit` as a calculated table in DAX Studio.
+- If you get “column not found” on `Slope1`/`Intercept`, your `LINESTX` output columns are named differently.
+  Quick way to inspect: create a **calculated table** temporarily:
+  ```DAX
+  __TrendlineFit =
+  VAR PointsByDriver =
+      FILTER (
+          ADDCOLUMNS (
+              ALL ( DimDriver[driver_id] ),
+              "x", [Avg Driver Price],
+              "y", [Total Driver Points]
+          ),
+          NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
+      )
+  RETURN LINESTX ( PointsByDriver, [y], [x] )
+  ```
+  Then look at the table columns in Data view (or in DAX Studio `EVALUATE __TrendlineFit`).
 - You can duplicate these measures for constructors by swapping `DimDriver`/driver facts for constructor equivalents.
 
