@@ -2,6 +2,30 @@
 
 > Adjust table names to match your Power BI query names.
 
+## Where should these measures live?
+
+In Power BI, a **measure can technically live in any table** — the result is the same.
+
+For sanity (and to make it easy to find things), create a dedicated table called something like **`Measures`** and put *all* measures there.
+
+Recommended layout:
+- **Measures** (disconnected table; no relationships)
+  - Base measures (Totals, Averages)
+  - Derived measures (rolling, ratios)
+  - Visual-helper measures (colours, labels, tooltips)
+
+How to create it:
+- Home → **Enter data** → create a 1-column table with a single row (e.g. column `Name`, value `Measures`), then name the table **Measures**.
+- Then for each measure: right-click the measure → **Home table** → set to **Measures**.
+
+If you prefer grouping by subject instead, a second-best approach is:
+- Put driver measures in `DimDriver`
+- Constructor measures in `DimConstructor`
+- Round/season measures in `DimRound` / `DimSeason`
+
+But the dedicated **Measures** table is usually the cleanest.
+
+
 ## Base
 
 ### Total Driver Points
