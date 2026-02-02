@@ -8,6 +8,45 @@ Note: the fact tables use **f1fantasytools IDs** (`Fact*.[id]`), and the dims ar
 
 > Tip: Build **measures once**, then reuse across pages.
 
+## Page 0 — Cover / Start Here
+
+Goal: a simple landing page so people instantly understand what the report is, what data it uses, and how to use the filters.
+
+### Suggested layout
+
+**Header**
+- Title: `F1 Fantasy Optimiser` (or whatever you want to call it)
+- Subtitle: season + round context (based on slicers)
+
+**Info cards (left column)**
+- **Data source:** f1fantasytools exports (drivers/constructors prices + points)
+- **Scoring:** `totalPoints` = normal; `nnTotalPoints` = No Negative chip variant
+- **Update cadence:** manual refresh (unless you wire a pipeline)
+
+**How to use (center column)**
+- 1) Pick **Season**
+- 2) Pick **Round** (if applicable)
+- 3) Use Driver/Constructor search to filter visuals
+- 4) Hover points/bars for tooltips (price change, ownership, etc.)
+
+**Disclaimers (bottom)**
+- Not affiliated with F1 / F1 Fantasy
+- For analysis only; not financial advice / not guaranteed outcomes
+
+### Recommended fields to show dynamically
+- `Selected Season` (measure or card)
+- `Selected Round` (measure or card)
+- `Last refresh` (optional: Power Query parameter / manual text)
+
+### Optional: navigation buttons
+- Buttons to jump to:
+  - Round dashboard
+  - Driver profile
+  - Constructor profile
+  - Value & movers
+
+---
+
 ## Page 1 — Round dashboard (round-centric)
 
 ### Slicers
