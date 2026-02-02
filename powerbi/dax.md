@@ -89,13 +89,13 @@ VAR PointsByDriver =
         NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
     )
 VAR n = COUNTROWS ( PointsByDriver )
-VAR sumX = SUMX ( PointsByDriver, [x] )
-VAR sumY = SUMX ( PointsByDriver, [y] )
-VAR sumXY = SUMX ( PointsByDriver, [x] * [y] )
-VAR sumX2 = SUMX ( PointsByDriver, [x] * [x] )
-VAR denom = n * sumX2 - sumX * sumX
+VAR sx = SUMX ( PointsByDriver, [x] )
+VAR sy = SUMX ( PointsByDriver, [y] )
+VAR sxy = SUMX ( PointsByDriver, [x] * [y] )
+VAR sx2 = SUMX ( PointsByDriver, [x] * [x] )
+VAR denom = n * sx2 - sx * sx
 RETURN
-    DIVIDE ( n * sumXY - sumX * sumY, denom )
+    DIVIDE ( n * sxy - sx * sy, denom )
 ```
 
 ### Driver trendline intercept (manual)
