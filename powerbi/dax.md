@@ -74,9 +74,9 @@ Power BI’s built-in scatter **Trend line** is visual-only, so to colour points
 Assumptions (adjust names to match your model):
 - Scatter **X** = `[Avg Driver Price]`
 - Scatter **Y** = `[Total Driver Points]`
-- Details/Legend is at driver level: `DimDriver[driver_id]`
+- Each dot is a driver (use `DimDriver[driver_id]` in **Details**, not Values — scatter doesn’t use a Values bucket).
 
-### Driver trendline slope
+### Driver trendline slope (manual; avoids LINESTX column-name issues)
 ```DAX
 Driver Trendline Slope =
 VAR PointsByDriver =
@@ -88,15 +88,17 @@ VAR PointsByDriver =
         ),
         NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
     )
-VAR Fit0 = LINESTX ( PointsByDriver, [y], [x] )
--- IMPORTANT: `Fit0` is a table *variable* (not a model table), so you can't write Fit0[Slope1].
--- We project the value we need into a 1-column table variable first.
-VAR Fit = SELECTCOLUMNS ( Fit0, "slope", [Slope1] )
+VAR n = COUNTROWS ( PointsByDriver )
+VAR sumX = SUMX ( PointsByDriver, [x] )
+VAR sumY = SUMX ( PointsByDriver, [y] )
+VAR sumXY = SUMX ( PointsByDriver, [x] * [y] )
+VAR sumX2 = SUMX ( PointsByDriver, [x] * [x] )
+VAR denom = n * sumX2 - sumX * sumX
 RETURN
-    MAXX ( Fit, [slope] )
+    DIVIDE ( n * sumXY - sumX * sumY, denom )
 ```
 
-### Driver trendline intercept
+### Driver trendline intercept (manual)
 ```DAX
 Driver Trendline Intercept =
 VAR PointsByDriver =
@@ -108,10 +110,11 @@ VAR PointsByDriver =
         ),
         NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
     )
-VAR Fit0 = LINESTX ( PointsByDriver, [y], [x] )
-VAR Fit = SELECTCOLUMNS ( Fit0, "intercept", [Intercept] )
+VAR n = COUNTROWS ( PointsByDriver )
+VAR xBar = DIVIDE ( SUMX ( PointsByDriver, [x] ), n )
+VAR yBar = DIVIDE ( SUMX ( PointsByDriver, [y] ), n )
 RETURN
-    MAXX ( Fit, [intercept] )
+    yBar - [Driver Trendline Slope] * xBar
 ```
 
 ### Predicted Y on the trendline (at the current point’s X)
@@ -135,21 +138,7 @@ RETURN
 
 Notes:
 - This respects the current report filters because it uses `ALLSELECTED`.
-- If you get “column not found” on `Slope1`/`Intercept`, your `LINESTX` output columns are named differently.
-  Quick way to inspect: create a **calculated table** temporarily:
-  ```DAX
-  __TrendlineFit =
-  VAR PointsByDriver =
-      FILTER (
-          ADDCOLUMNS (
-              ALL ( DimDriver[driver_id] ),
-              "x", [Avg Driver Price],
-              "y", [Total Driver Points]
-          ),
-          NOT ISBLANK ( [x] ) && NOT ISBLANK ( [y] )
-      )
-  RETURN LINESTX ( PointsByDriver, [y], [x] )
-  ```
-  Then look at the table columns in Data view (or in DAX Studio `EVALUATE __TrendlineFit`).
+- This version uses the closed-form regression formula (covariance/variance) and avoids `LINESTX` entirely.
+- If your scatter dots are not at `DimDriver[driver_id]` grain, swap `ALLSELECTED ( DimDriver[driver_id] )` for whatever field is in the scatter **Details** bucket.
 - You can duplicate these measures for constructors by swapping `DimDriver`/driver facts for constructor equivalents.
 
