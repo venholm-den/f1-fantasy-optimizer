@@ -83,6 +83,49 @@ Goal: a simple landing page so people instantly understand what the report is, w
 - Table: Constructors (selected round)
   - Columns: abbr, price, priceChange, totalPoints, nnTotalPoints, percentOwned
 
+## Tooltip — Driver year-over-year (YoY) comparison
+
+Create a **tooltip page** that shows “this driver across seasons” at a glance.
+
+### Setup (Power BI)
+- New page → Page information → **Tooltip = On**
+- Canvas settings → **Page size = Tooltip**
+- Keep it compact: 320×240-ish (default tooltip size)
+
+### Required model assumptions
+- You have multiple seasons loaded (e.g. 2023–2025)
+- Driver identity is consistent across seasons via `DimDriver[driver_id]`
+
+### Visuals to include
+
+**Header**
+- Driver: `SELECTEDVALUE(DimDriver[abbr])` (as a card)
+
+**Mini chart: Points by season**
+- Visual: clustered column
+- Axis: `DimSeason[season]` (or your season field)
+- Values:
+  - `SUM(FactDriverPoints[totalPoints])`
+  - Optional: `SUM(FactDriverPoints[nnTotalPoints])` (as a second series)
+
+**Mini chart: Avg price by season**
+- Visual: line or clustered column
+- Axis: season
+- Values: `AVERAGE(FactDriverPrices[price])`
+
+**Quick stats (cards)**
+- Best season points
+- Worst season points
+- Avg points/round (current filter)
+
+### How to wire it to the main pages
+On your driver scatter/bar/table visuals:
+- Visual → Format → **Tooltip** → Type: *Report page* → select this tooltip page.
+
+Tip: keep the tooltip filtered to the hovered driver only. Avoid extra slicers on the tooltip page.
+
+---
+
 ## Page 2 — Driver profile (driver-centric)
 
 ### Slicers
