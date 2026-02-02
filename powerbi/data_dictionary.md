@@ -14,7 +14,10 @@
 
 ### `f1fantasytools_points_drivers_long.csv`
 - `totalPoints` (number)
-- `nnTotalPoints` (number) - points under No Negative chip
+- `nnTotalPoints` (number) - **No Negative** total points.
+  - Meaning: the points you’d get if the *No Negative* chip is applied for that round — negative event penalties are floored to 0 (so a bad race can’t drag the total below zero).
+  - Use-case: useful for comparing “normal risk” vs “protected downside” lineups/drivers.
+  - Note: this is a derived scoring variant exposed by f1fantasytools; treat it as an alternative to `totalPoints`, not an additional bonus.
 
 (constructors files mirror this structure; constructor `id` examples: `RED`, `FER`, `MCL`, etc.)
 
