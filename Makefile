@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 SEASON ?= 2025
 
-.PHONY: help venv refresh scrape dims schedule all
+.PHONY: help venv refresh scrape dims schedule points points_all all
 
 help:
 	@echo "Targets:"
@@ -29,4 +29,13 @@ dims:
 schedule:
 	. .venv/bin/activate && python -m src.ergast_schedule --season $(SEASON)
 
-refresh: scrape dims schedule
+points:
+	. .venv/bin/activate && python -m src.ergast_points --season $(SEASON)
+
+# Handy for multi-year reports
+points_all:
+	. .venv/bin/activate && python -m src.ergast_points --season 2023
+	. .venv/bin/activate && python -m src.ergast_points --season 2024
+	. .venv/bin/activate && python -m src.ergast_points --season 2025
+
+refresh: scrape dims schedule points

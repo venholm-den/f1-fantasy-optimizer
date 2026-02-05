@@ -44,6 +44,18 @@ python3 -m src.scrape_f1fantasytools --season 2025
 python3 -m src.dimensions --season 2025
 ```
 
+### A2) (Optional) Pull official F1 championship points (drivers + constructors)
+
+This fetches *real* points from Ergast/Jolpica (not F1 Fantasy scoring) and writes round-grained CSVs under `data/seasons/<season>/raw/`.
+
+```bash
+python3 -m src.ergast_points --season 2025
+# or (for your report range)
+python3 -m src.ergast_points --season 2023
+python3 -m src.ergast_points --season 2024
+python3 -m src.ergast_points --season 2025
+```
+
 ### B) Generate placeholder derived outputs
 
 ```bash
