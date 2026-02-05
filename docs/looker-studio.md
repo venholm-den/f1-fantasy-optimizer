@@ -26,8 +26,10 @@ https://raw.githubusercontent.com/<owner>/<repo>/<branch>/mycsv/<file>.csv
 Example:
 
 ```text
-https://raw.githubusercontent.com/venholm-den/f1-fantasy-optimizer/main/mycsv/<file>.csv
+https://raw.githubusercontent.com/venholm-den/f1-fantasy-optimizer/main/mycsv/<table>/<table>.csv
 ```
+
+This repo also includes **per-year** versions (e.g. `<table>2025.csv`) and an **all-years combined** version (`<table>.csv`). If you want one Looker Studio data source spanning multiple seasons, use the combined file.
 
 ---
 
