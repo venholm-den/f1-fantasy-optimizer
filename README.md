@@ -82,3 +82,8 @@ python3 -m src.viz.heatmap_points --season 2025
 Outputs are written to `outputs/` (gitignored).
 
 > Note: this repo scaffolds the pipeline and file formats first. The modelling/optimisation will be filled in iteratively.
+
+## Public dashboards (GitHub Pages + Looker Studio)
+
+- GitHub Pages report: see [`docs/README.md`](docs/README.md)
+- Looker Studio setup (using the public `mycsv/` files): see [`docs/looker-studio.md`](docs/looker-studio.md)
