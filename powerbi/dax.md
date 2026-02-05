@@ -28,12 +28,12 @@ But the dedicated **Measures** table is usually the cleanest.
 
 ## Base
 
-### Total Driver Points
+### Total Driver Points (Fantasy)
 ```DAX
 Total Driver Points = SUM ( FactDriverPoints[totalPoints] )
 ```
 
-### Total Constructor Points
+### Total Constructor Points (Fantasy)
 ```DAX
 Total Constructor Points = SUM ( FactConstructorPoints[totalPoints] )
 ```
@@ -46,6 +46,71 @@ Avg Driver Price = AVERAGE ( FactDriverPrices[price] )
 ### Avg Constructor Price
 ```DAX
 Avg Constructor Price = AVERAGE ( FactConstructorPrices[price] )
+```
+
+## Official F1 points (championship)
+
+These measures assume you imported the new CSVs:
+- `f1_official_driver_race_points.csv`
+- `f1_official_constructor_race_points.csv`
+- `f1_official_driver_standings.csv`
+- `f1_official_constructor_standings.csv`
+
+…and named the Power BI queries something like:
+- `FactOfficialDriverRacePoints`
+- `FactOfficialConstructorRacePoints`
+- `FactOfficialDriverStandings`
+- `FactOfficialConstructorStandings`
+
+Also recommended:
+- Create relationships from these official fact tables to your dims via:
+  - Drivers: `driverAbbr` ↔ `DimDriver[abbr]`
+  - Constructors: `constructorAbbr` ↔ `DimConstructor[abbr]`
+  - Rounds: `season`+`round` ↔ your existing season/round fields (or join via `DimRound`)
+
+### Official Driver Points (sum)
+```DAX
+Official Driver Points = SUM ( FactOfficialDriverRacePoints[points] )
+```
+
+### Official Constructor Points (sum)
+```DAX
+Official Constructor Points = SUM ( FactOfficialConstructorRacePoints[points] )
+```
+
+### Official Driver Points (cumulative standings)
+If you’d rather use the standings tables (cumulative after each round), use these:
+
+```DAX
+Official Driver Standings Points = MAX ( FactOfficialDriverStandings[points] )
+```
+
+```DAX
+Official Constructor Standings Points = MAX ( FactOfficialConstructorStandings[points] )
+```
+
+### Fantasy vs Official — Driver point delta
+```DAX
+Driver Points Delta (Fantasy - Official) =
+[Total Driver Points] - [Official Driver Points]
+```
+
+### Fantasy vs Official — Constructor point delta
+```DAX
+Constructor Points Delta (Fantasy - Official) =
+[Total Constructor Points] - [Official Constructor Points]
+```
+
+### Official points per price (Driver)
+```DAX
+Official Driver Points per Price =
+DIVIDE ( [Official Driver Points], SUM ( FactDriverPrices[price] ) )
+```
+
+### Official points per price (Constructor)
+```DAX
+Official Constructor Points per Price =
+DIVIDE ( [Official Constructor Points], SUM ( FactConstructorPrices[price] ) )
 ```
 
 ## Value proxies

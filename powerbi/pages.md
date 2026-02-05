@@ -56,9 +56,11 @@ Goal: a simple landing page so people instantly understand what the report is, w
 
 ### KPI cards
 - Avg Driver Price: `[Avg Driver Price]`
-- Total Driver Points: `[Total Driver Points]`
+- Total Driver Points (Fantasy): `[Total Driver Points]`
+- Official Driver Points: `[Official Driver Points]`
 - Avg Constructor Price: `[Avg Constructor Price]`
-- Total Constructor Points: `[Total Constructor Points]`
+- Total Constructor Points (Fantasy): `[Total Constructor Points]`
+- Official Constructor Points: `[Official Constructor Points]`
 
 ### Visuals
 - Bar (Top 10): Driver totalPoints for selected round
@@ -74,7 +76,13 @@ Goal: a simple landing page so people instantly understand what the report is, w
 - Scatter: Price vs Points (drivers)
   - Details: `DimDriver[abbr]`
   - X: `SUM(FactDriverPrices[price])`
-  - Y: `[Total Driver Points]`
+  - Y: `[Total Driver Points]` (Fantasy)
+  - Tooltip: priceChange, percentOwned
+
+- Scatter: Price vs *Official* Points (drivers)
+  - Details: `DimDriver[abbr]`
+  - X: `SUM(FactDriverPrices[price])`
+  - Y: `[Official Driver Points]`
   - Tooltip: priceChange, percentOwned
 
 - Table: Drivers (selected round)
@@ -137,9 +145,13 @@ Tip: keep the tooltip filtered to the hovered driver only. Avoid extra slicers o
   - X: `DimRound[round]`
   - Y: `AVERAGE(FactDriverPrices[price])`
 
-- Line: Driver totalPoints by round
+- Line: Driver totalPoints by round (Fantasy)
   - X: `DimRound[round]`
   - Y: `SUM(FactDriverPoints[totalPoints])`
+
+- Line: Driver *Official* points by round
+  - X: `DimRound[round]`
+  - Y: `[Official Driver Points]`
 
 - Line: totalPoints vs nnTotalPoints
   - X: `DimRound[round]`
@@ -159,7 +171,8 @@ Tip: keep the tooltip filtered to the hovered driver only. Avoid extra slicers o
 
 ### Visuals
 - Line: Constructor price by round
-- Line: Constructor totalPoints by round
+- Line: Constructor totalPoints by round (Fantasy)
+- Line: Constructor *Official* points by round
 - Line: totalPoints vs nnTotalPoints
 - Cards: season totals, avg points/round
 
