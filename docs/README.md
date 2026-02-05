@@ -35,6 +35,12 @@ GitHub will give you a public URL like:
 Open the Pages URL. The entrypoint is:
 - `docs/index.html`
 
+## Looker Studio
+
+If you want to build a public report using Google/Looker Studio (and embed it elsewhere), see:
+- Setup + data connections: [`docs/looker-studio.md`](looker-studio.md)
+- Report build guide (charts, filters, joins): [`docs/looker-studio-report.md`](looker-studio-report.md)
+
 ## Notes
 - If you add more seasons, add them to the season dropdown in `docs/index.html`.
 - Everything in `docs/` is public.
