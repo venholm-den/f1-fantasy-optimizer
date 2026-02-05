@@ -151,7 +151,89 @@ If you don’t want to blend yet, start with one table and build simple price tr
 
 ---
 
-## 6) Joining tables (Looker Studio “Blend Data”)
+## 6) Calculated fields ("measures" like DAX)
+
+Looker Studio doesn’t support DAX, and it doesn’t have a single semantic model like Power BI.
+Instead you typically use **Calculated fields** (either at the *data source* level or the *chart* level).
+
+Where to add them:
+- **Data source calculated field**: reusable across the whole report (recommended)
+- **Chart calculated field**: only for one chart
+
+In Looker Studio:
+- Edit report → pick a chart → **Data** panel → **Add a field**
+- Or go to **Resource → Manage added data sources → Edit** and add fields there
+
+### Common "DAX-like" patterns and how to do them
+
+#### A) Basic arithmetic
+
+Examples:
+- `Points per million`:
+
+```text
+points / price
+```
+
+- `% owned as fraction` (if stored as a percent number like `27`):
+
+```text
+percentOwned / 100
+```
+
+#### B) Conditional logic (IF/CASE)
+
+Bucket a driver into price tiers:
+
+```text
+CASE
+  WHEN price < 6 THEN "Budget"
+  WHEN price < 12 THEN "Mid"
+  ELSE "Premium"
+END
+```
+
+#### C) Safe division (avoid divide-by-zero)
+
+```text
+CASE WHEN price = 0 OR price IS NULL THEN NULL ELSE points / price END
+```
+
+#### D) Text concatenation (labels)
+
+```text
+CONCAT(driver_givenName, " ", driver_familyName)
+```
+
+#### E) "Latest round" values (important difference vs DAX)
+
+Power BI/DAX often does "latest value" with filter context.
+In Looker Studio with CSV/Sheets sources, the simplest approach is:
+
+- Add a **Round** control and let users choose the round, **or**
+- Precompute “latest round per season” in the data (recommended).
+
+If you want an always-latest view without manual round selection, the best way is a **BigQuery view** that filters to `MAX(round)` per `season`.
+
+#### F) Running totals / cumulative sums
+
+Looker Studio supports “Running calculation” for some chart types:
+- Time series / scorecards can use running sums depending on chart
+
+But for consistent results, precompute cumulative totals in BigQuery (or in your pipeline) and export as a column.
+
+### When calculated fields won’t be enough
+
+Looker Studio blends + calculated fields can get limiting for:
+- complex "filter context" measures
+- measures that need a dynamic "latest round" per season
+- many-to-many joins
+
+For those, create a **prepared table/view** (ideally in BigQuery) that already contains the metrics you need (e.g. `points_last_round`, `price_change_last_round`, `value_score`, etc.).
+
+---
+
+## 7) Joining tables (Looker Studio “Blend Data”)
 
 Looker Studio doesn’t do a full semantic model like Power BI. For joins you typically use **Blend data**.
 
