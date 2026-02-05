@@ -62,9 +62,12 @@ async function loadSeason(season) {
   const metaEl = document.getElementById('dataMeta');
   metaEl.textContent = 'Loading…';
 
-  const base = `./data/${season}`;
-  const driverPath = `${base}/f1_official_driver_standings.csv`;
-  const constructorPath = `${base}/f1_official_constructor_standings.csv`;
+  // Public-site data source: read directly from the repo's mycsv/ folder.
+  // This avoids copying CSVs into docs/ for manual refresh.
+  const RAW_BASE = 'https://raw.githubusercontent.com/venholm-den/f1-fantasy-optimizer/main/mycsv';
+
+  const driverPath = `${RAW_BASE}/f1_official_driver_standings/f1_official_driver_standings${season}.csv`;
+  const constructorPath = `${RAW_BASE}/f1_official_constructor_standings/f1_official_constructor_standings${season}.csv`;
 
   const [drivers, constructors] = await Promise.all([
     fetchCsv(driverPath),

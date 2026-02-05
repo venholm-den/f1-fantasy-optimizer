@@ -5,31 +5,17 @@ This folder contains a **free, publicly accessible** report hosted via **GitHub 
 It is intentionally simple:
 - no backend
 - no auth
-- loads CSV files from `docs/data/<season>/...`
+- loads CSV files from the repo's `mycsv/` folder via `raw.githubusercontent.com`
 
-## 1) Export data into `docs/`
+## 1) Data source
 
-After you update your season data (e.g. after running your scrape/points scripts), run:
+This public report reads CSVs directly from:
 
-```bash
-node scripts/export_public_report.mjs --season 2025
-```
+- `mycsv/` (in the repo)
 
-(There’s also a Python version at `scripts/export_public_report.py` if you prefer.)
+so updates are as simple as committing new CSVs to `mycsv/`.
 
-That copies selected CSVs from:
-- `data/seasons/2025/raw/`
-
-into:
-- `docs/data/2025/`
-
-Commit the changed files:
-
-```bash
-git add docs/data/2025/*.csv
-git commit -m "Update public report data (2025)"
-git push
-```
+No additional export step is required for the website.
 
 ## 2) Enable GitHub Pages
 
@@ -50,5 +36,6 @@ Open the Pages URL. The entrypoint is:
 - `docs/index.html`
 
 ## Notes
-- If you add more seasons, export them the same way and add options in `docs/index.html`.
+- If you add more seasons, add them to the season dropdown in `docs/index.html`.
 - Everything in `docs/` is public.
+- Everything in `mycsv/` is also public (since it’s in a public GitHub repo).
